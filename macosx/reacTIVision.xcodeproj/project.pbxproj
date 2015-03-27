@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8EBEFFC21ABA5B5A00F13196 /* USB3Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EBEFFC11ABA5B5A00F13196 /* USB3Camera.cpp */; };
 		B206F53E19E3DD4A00B8E1DA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B206F53D19E3DD4A00B8E1DA /* CoreMedia.framework */; };
 		B21683D319F3962500F07F0D /* USBBusProber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B21683D119F3962500F07F0D /* USBBusProber.framework */; };
 		B21683D419F3962500F07F0D /* VVUVCKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B21683D219F3962500F07F0D /* VVUVCKit.framework */; };
@@ -98,6 +99,8 @@
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8EBEFFC01ABA523500F13196 /* USB3Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = USB3Camera.h; sourceTree = "<group>"; };
+		8EBEFFC11ABA5B5A00F13196 /* USB3Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = USB3Camera.cpp; sourceTree = "<group>"; };
 		B206F53D19E3DD4A00B8E1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = ../../../../../../System/Library/Frameworks/CoreMedia.framework; sourceTree = "<group>"; };
 		B214E6660959DA6F00A347C1 /* FidtrackFinder.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 30; name = FidtrackFinder.cpp; path = ../common/FidtrackFinder.cpp; sourceTree = SOURCE_ROOT; };
 		B214E6670959DA6F00A347C1 /* FidtrackFinder.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; name = FidtrackFinder.h; path = ../common/FidtrackFinder.h; sourceTree = SOURCE_ROOT; };
@@ -442,6 +445,8 @@
 			isa = PBXGroup;
 			children = (
 				B29545EA19E2FD74001111A6 /* AVfoundationCamera.h */,
+				8EBEFFC01ABA523500F13196 /* USB3Camera.h */,
+				8EBEFFC11ABA5B5A00F13196 /* USB3Camera.cpp */,
 				B29545EB19E2FD74001111A6 /* AVfoundationCamera.mm */,
 				B2208511078AFC0A0047913B /* CameraTool.cpp */,
 				B2208512078AFC0A0047913B /* CameraTool.h */,
@@ -572,6 +577,7 @@
 				B2505B730ACC635B007C21BB /* CalibrationEngine.cpp in Sources */,
 				B24EA44F0015EAB600096D13 /* tinystr.cpp in Sources */,
 				B24EA4510015EAB600096D13 /* tinyxml.cpp in Sources */,
+				8EBEFFC21ABA5B5A00F13196 /* USB3Camera.cpp in Sources */,
 				B24EA4530015EAB600096D13 /* tinyxmlerror.cpp in Sources */,
 				B29545EC19E2FD74001111A6 /* AVfoundationCamera.mm in Sources */,
 				B24EA4540015EAB600096D13 /* tinyxmlparser.cpp in Sources */,
@@ -809,7 +815,8 @@
 				GCC_STRICT_ALIASING = YES;
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "./**";
+				"HEADER_SEARCH_PATHS[arch=*]" = ../.;
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
