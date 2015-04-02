@@ -12,22 +12,34 @@
 	<dict>
 		<key>01440D4E938C97A9DBFC474CFC2FCD61A1889047</key>
 		<string>https://github.com/mkalten/reacTIVision.git</string>
+		<key>F604BCAB9BA768F2543C9B5DC039057015A13DB9</key>
+		<string>https://github.com/arthurCormack/reactivision.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>macosx/reacTIVision.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>01440D4E938C97A9DBFC474CFC2FCD61A1889047</key>
+		<string>../../../../reacTIVision-GIT</string>
+		<key>F604BCAB9BA768F2543C9B5DC039057015A13DB9</key>
 		<string>../../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>https://github.com/mkalten/reacTIVision.git</string>
+	<string>https://github.com/arthurCormack/reactivision.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>01440D4E938C97A9DBFC474CFC2FCD61A1889047</string>
+	<string>F604BCAB9BA768F2543C9B5DC039057015A13DB9</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F604BCAB9BA768F2543C9B5DC039057015A13DB9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>reacTIVision-1.5-src</string>
+		</dict>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>

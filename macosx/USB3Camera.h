@@ -32,6 +32,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 #include <string.h>
+
 #include <m3api/xiApi.h>
 
 /*//will we also need to import gobject, glib stff? gdk/gtk? gst (gstreamer)?
@@ -71,8 +72,7 @@ public:
     int getDefaultCameraSetting(int mode);
     bool setDefaultCameraSetting(int mode);
     
-    unsigned long getcurus();
-    HANDLE handle;
+    void* videoDisplay(void*);
     
 private:
     /*
@@ -83,15 +83,25 @@ private:
      */
     //usb3 specific stuff here
     
-    //*camera;
-    //HANDLE *handle;
-    //HANDLE *camera;
     /* so with regards to the list
      ... we either have to find a congruent structure in xiAPI ... or ... we have to construct one ... make a struct that has the same required properties / members */
     
+    
+    unsigned long getcurus();
+    HANDLE handle;
+    XI_IMG_FORMAT prev_format = XI_RAW8;
+    XI_IMG image;
+    
+    
     BOOLEAN acquire, quitting, render = TRUE;
+    
     int maxcx, maxcy, roix0, roiy0, roicx, roicy;
-    pthread_t videoThread;
+    
+    unsigned long frames;
+    unsigned long prevframes;
+    unsigned long lostframes;
+    unsigned long curtime, prevtime;
+    //pthread_t videoThread;
     
 };
 

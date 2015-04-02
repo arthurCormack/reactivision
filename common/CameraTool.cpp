@@ -72,9 +72,19 @@ CameraEngine* CameraTool::findCamera(const char* config_file) {
 		if( !camera->findCamera()) delete camera;
 		else return camera;	
 	#else
-		camera = new AVfoundationCamera(config_file);
-		if( !camera->findCamera()) delete camera;
-		else return camera;	
+        //CameraTool's primary job, ist to return the camera obj,
+        //maybe do a check to see if there is a usb3/xiAPI camera present, and use that if so, and if not, use the ACFoundationCamera
+        //how would we check that?
+        //we'd need to actually include the xiAPI here, ant listDevices, and see if there are any there.
+        camera = new USB3Camera(config_file);
+        if( camera->findCamera()) {
+            return camera;
+        } else {
+            delete camera;//kill it, so we star afresh
+            camera = new AVfoundationCamera(config_file);
+            if( !camera->findCamera()) delete camera;
+            else return camera;
+        }
 	#endif
 
 	#endif		

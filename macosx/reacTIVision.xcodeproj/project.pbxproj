@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8E4F57201AC66317009EF6B2 /* m3api.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E4F571F1AC66317009EF6B2 /* m3api.framework */; };
+		8E4F57211AC66317009EF6B2 /* m3api.framework in Copy Frameworks Into .app Bundle */ = {isa = PBXBuildFile; fileRef = 8E4F571F1AC66317009EF6B2 /* m3api.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8EBEFFC21ABA5B5A00F13196 /* USB3Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8EBEFFC11ABA5B5A00F13196 /* USB3Camera.cpp */; };
 		B206F53E19E3DD4A00B8E1DA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B206F53D19E3DD4A00B8E1DA /* CoreMedia.framework */; };
 		B21683D319F3962500F07F0D /* USBBusProber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B21683D119F3962500F07F0D /* USBBusProber.framework */; };
@@ -89,6 +91,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				B2DEC9DA19F65370006CAD09 /* SDL2.framework in Copy Frameworks Into .app Bundle */,
+				8E4F57211AC66317009EF6B2 /* m3api.framework in Copy Frameworks Into .app Bundle */,
 				B21683D519F3965500F07F0D /* VVUVCKit.framework in Copy Frameworks Into .app Bundle */,
 				B21683D619F3965500F07F0D /* USBBusProber.framework in Copy Frameworks Into .app Bundle */,
 			);
@@ -99,6 +102,7 @@
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		8E4F571F1AC66317009EF6B2 /* m3api.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = m3api.framework; sourceTree = "<group>"; };
 		8EBEFFC01ABA523500F13196 /* USB3Camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = USB3Camera.h; sourceTree = "<group>"; };
 		8EBEFFC11ABA5B5A00F13196 /* USB3Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = USB3Camera.cpp; sourceTree = "<group>"; };
 		B206F53D19E3DD4A00B8E1DA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = ../../../../../../System/Library/Frameworks/CoreMedia.framework; sourceTree = "<group>"; };
@@ -243,6 +247,7 @@
 				B29545EE19E2FF80001111A6 /* AVFoundation.framework in Frameworks */,
 				B2E9BB3B09D0D2C1005DF348 /* CoreMIDI.framework in Frameworks */,
 				B2E9BB4009D0D2E0005DF348 /* CoreAudio.framework in Frameworks */,
+				8E4F57201AC66317009EF6B2 /* m3api.framework in Frameworks */,
 				B24EA4F30015EB5000096D13 /* Cocoa.framework in Frameworks */,
 				B26725EE0C5E3FD100D7FD74 /* IOKit.framework in Frameworks */,
 				B2E6C87A0C9AE9BB0018A29E /* CoreFoundation.framework in Frameworks */,
@@ -325,6 +330,7 @@
 		29B97314FDCFA39411CA2CEA /* visionEngineNT */ = {
 			isa = PBXGroup;
 			children = (
+				8E4F571F1AC66317009EF6B2 /* m3api.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -638,6 +644,7 @@
 					../common,
 				);
 				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					./dc1394,
 					"$(PROJECT_DIR)/dc1394",
@@ -685,6 +692,7 @@
 					../common,
 				);
 				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					./dc1394,
 					"$(PROJECT_DIR)/dc1394",
@@ -730,6 +738,7 @@
 					../common,
 				);
 				INFOPLIST_FILE = Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					./dc1394,
 					"$(PROJECT_DIR)/dc1394",

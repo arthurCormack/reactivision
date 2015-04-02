@@ -39,6 +39,7 @@
     #include "../macosx/legacy/MacVdigCamera.h"
 	#else
 	#include "../macosx/AVfoundationCamera.h"
+    #include "../macosx/USB3Camera.h"
     /*
      include a USB3/xIQ Camera here. make that based on Ximea code.
      can we include both? or can we only have one active camera class in play?

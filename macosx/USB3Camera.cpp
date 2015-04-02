@@ -27,26 +27,25 @@
 
 #include "USB3Camera.h"
 #include <stdio.h>
-
+#include <pthread.h>
 
 USB3Camera::USB3Camera(const char* cfg) : CameraEngine(cfg)
 {
+    //we can come back, and define any default values
+    //some variables are defined by header files included that are included by USB3Camera.h, like CameraEngine
+    
     cameraID = -1;
-    
     cam_buffer = NULL;
-    camera=NULL;
-    
-    //list=NULL;
-    //d=NULL;//this is used to reference an instance of the dc1394 class --
-    
     
     running=false;
     timeout= 5000;
     lost_frames=0;
+   
+    frames = 0;
+    prevframes = 0;
+    lostframes = 0;
     
-    BOOLEAN acquire;
-    
-    
+    //curtime, prevtime;
     
     
 }
@@ -60,6 +59,8 @@ USB3Camera::~USB3Camera()
 
 void USB3Camera::listDevices() {
     
+    
+    //we don't actually need this ... but we might as well, for diagnostic purposes
    
     //image.size = sizeof(XI_IMG);
     //image.bp = NULL;
@@ -147,16 +148,58 @@ void USB3Camera::listDevices() {
     //return a list of cameras
     
     DWORD tmp;
-    xiGetNumberDevices(&tmp);
+    xiGetNumberDevices(&tmp);//rescan available devices. It is needed to be called before any other function of API is called by application.
     DWORD nIndex = 0;
-    //
     HANDLE handle = INVALID_HANDLE_VALUE;
     
+    //how do we present some deails about the camera?
+    /*
+        what are we going to do about the problem of there being two competing Classes: USB3Camera, and AVFoundationCamera? Is it that reacTIVision can use both DC1394 or AVFOundationCamera? Or is it that it chooses one or the other, depending on the OS version that is in play?
+            I think that the AVFOundation camera, is like a new and improved version of the lib1394, and can do al that it is able to do, like seeing lib1394 cameras. If that is the case, then, h'mm.
+     Is it possible to have two Classes, and choose to use both of them?
+     to invoke the USB3Camera, if no AVFOundation Cameras are found?
+     
+    */
+    //it is quite possible that the sample code that was shipped with the XIMEA camera, is circa OSX10.7
     
-    if(xiOpenDevice(nIndex, &handle) != XI_OK) {
-        printf("Couldn't setup camera!\n");
-        //acquire = FALSE;
-        //return TRUE;
+    if (tmp == 0) {
+        fprintf (stderr, "no DC1394 cameras found\n");
+        //
+    } else {
+        if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+            printf("Couldn't setup camera!\n");
+            //acquire = FALSE;
+            //return TRUE;
+        } else {
+            //what can we find out about the device?
+            //char* someDeviceName;
+            //xiGetParamString(handle, XI_PRM_DEVICE_NAME, someDeviceName);//xiGetParamString does not seem to exist in the API
+            //ok ... so some of the stuff that is in the documentation, may not actually be available here. some things are ... so that is promising ...
+            //so, we stick to things that are in the header file of the libary, and in the example that we have
+            
+            /*unsigned int model_id;
+            xiGetParamInt(handle, XI_PRM_DEVICE_MODEL_ID, &model_id);
+            
+            printf("\tCamera Model: %d\n", model_id);
+            // show serial number of this camera
+            unsigned int sn=0;
+            
+            xiGetParamInt(handle, XI_PRM_DEVICE_SN, &sn);
+            printf("Serial number of the camera is: %08x\n",sn);*/
+            
+            //DWORD DevId = ;
+            //char* prm;
+            DWORD value_size = 0;
+            char* someThing = NULL;
+            
+            xiGetDeviceInfoString(nIndex, XI_PRM_DEVICE_SN, someThing, value_size);
+            printf("\tCamera SN: %s\n", someThing);
+            
+            xiGetDeviceInfoString(nIndex, XI_PRM_DEVICE_NAME, someThing, value_size);
+            printf("\tCamera Name: %s\n", someThing);
+            
+            
+        }
     }
     
     
@@ -168,6 +211,7 @@ unsigned long getcurus() {
 }
 
 bool USB3Camera::findCamera() {
+    
     /*
     d = dc1394_new();
     
@@ -196,10 +240,36 @@ bool USB3Camera::findCamera() {
      
     */
     
+    DWORD tmp;
+   
+    DWORD nIndex = 0;
+    HANDLE handle = INVALID_HANDLE_VALUE;//handle stays alive outside of this
+    
+    xiGetNumberDevices(&tmp); //rescan available devices
+    if (tmp == 0) {
+        fprintf (stderr, "no USB3Camera cameras found\n");
+        return false;
+    } else {
+        if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+            fprintf (stderr, "could not open device\n");
+        } else {
+            readSettings();//h'mm
+            
+        }
+    }
+    
     return true;
+
 }
 
 bool USB3Camera::initCamera() {
+    
+    
+    
+    
+    image.size = sizeof(XI_IMG);
+    image.bp = NULL;
+    image.bp_size = 0;
     
     /*
     //if (cameraID < 0) return false;
@@ -381,8 +451,32 @@ bool USB3Camera::initCamera() {
     
     cam_buffer = new unsigned char[cam_width*cam_height*bytes];
     
-    applyCameraSettings();
+   
     */
+    /*
+     what might we want to do here?
+     we need to figure out the width and height, in order to figure out the buffer size
+     */
+    unsigned int w, h;
+    
+    xiGetParamInt(handle, XI_PRM_WIDTH XI_PRM_INFO_MAX, &maxcx);
+    xiGetParamInt(handle, XI_PRM_HEIGHT XI_PRM_INFO_MAX, &maxcy);
+    
+    //set default values
+    
+    float fps=0;
+    xiGetParamFloat(handle, XI_PRM_FRAMERATE, &fps);
+    
+    float mingain, maxgain;
+    xiGetParamFloat(handle, XI_PRM_GAIN XI_PRM_INFO_MIN, &mingain);
+    xiGetParamFloat(handle, XI_PRM_GAIN XI_PRM_INFO_MAX, &maxgain);
+    
+    //xiSetParamInt(handle, XI_PRM_AUTO_WB, 1);
+    //xiSetParamInt(handle, XI_PRM_EXPOSURE, 10000);
+    xiSetParamInt(handle, XI_PRM_IMAGE_DATA_FORMAT, XI_RAW8);
+    
+    applyCameraSettings();
+    
     return true;
      
      
@@ -390,6 +484,10 @@ bool USB3Camera::initCamera() {
 
 unsigned char* USB3Camera::getFrame()
 {
+    
+    if(xiGetImage(handle, 5000, &image) != XI_OK) {
+        return NULL;
+    }
     /*
     dc1394video_frame_t *frame = NULL;
     dc1394_capture_dequeue(camera, DC1394_CAPTURE_POLICY_POLL, &frame);
@@ -473,7 +571,19 @@ unsigned char* USB3Camera::getFrame()
         } else { return NULL; }
     }
     */
+    
+    
+    
 }
+
+//void* USB3Camera::videoDisplay(void*) {
+    /*
+     we probably don't need to call the video display .... that is a thread function that keeps going, it's the runner ... the thing that gets perpetually called
+     we don't need to do it, because there is another runner process already in motion - the reacTIVision tracker itself - we can put the important stuff in the getFrame method of this class
+     
+     */
+    //return NULL;
+//}
 
 bool USB3Camera::startCamera()
 {
@@ -498,8 +608,12 @@ bool USB3Camera::startCamera()
         fprintf(stderr,"camera doesn't seem to want to turn on\n");
         return false;
     }
-    
      */
+    //if(pthread_create(&videoThread, NULL, videoDisplay(), NULL))
+        //exit(1);
+    //pthread_create(&videoThread, NULL, USB3Camera::videoDisplay, NULL);
+    
+    
     running = true;
     return true;
 }
@@ -535,8 +649,8 @@ bool USB3Camera::resetCamera()
 
 bool USB3Camera::closeCamera()
 {
-    if (camera!=NULL) dc1394_camera_free(camera);
-    if (d!=NULL) dc1394_free(d);
+    //if (camera!=NULL) dc1394_camera_free(camera);
+    //if (d!=NULL) dc1394_free(d);
     return true;
 }
 
@@ -619,6 +733,9 @@ int USB3Camera::getCameraSetting(int mode) {
     uint32_t value = 0;
     if (dc1394_feature_get_value(camera,  feature, &value)!= DC1394_SUCCESS) return 0;
      */
+    
+    uint32_t value = 0;
+    
     return (int)value;
 }
 
@@ -640,6 +757,8 @@ int USB3Camera::getMaxCameraSetting(int mode) {
     uint32_t max;
     if (dc1394_feature_get_boundaries(camera, feature, &min, &max)!= DC1394_SUCCESS) return 0;
      */
+    uint32_t min;
+    uint32_t max;
     return (int)max;
 }
 
@@ -660,6 +779,9 @@ int USB3Camera::getMinCameraSetting(int mode) {
     uint32_t max;
     if (dc1394_feature_get_boundaries(camera, feature, &min, &max)!= DC1394_SUCCESS) return 0;
      */
+    uint32_t min;
+    //
+    uint32_t max;
     return (int)min;
 }
 
