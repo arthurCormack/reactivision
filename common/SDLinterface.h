@@ -41,6 +41,8 @@
 #define WIDTH 640
 #define HEIGHT 480
 
+//does this hard-code the height and width of the cam_buffer that we are trying to parse?
+
 #include "CameraTool.h"
 #include "RingBuffer.h"
 #include "FrameProcessor.h"

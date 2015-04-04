@@ -30,7 +30,7 @@
 
 //#import <AVFoundation/AVFoundation.h>
 #include <sys/time.h>
-#include <pthread.h>
+//#include <pthread.h>
 #include <string.h>
 
 #include <m3api/xiApi.h>
@@ -94,6 +94,7 @@ private:
     
     
     BOOLEAN acquire, quitting, render = TRUE;
+    
     
     int maxcx, maxcy, roix0, roiy0, roicx, roicy;
     

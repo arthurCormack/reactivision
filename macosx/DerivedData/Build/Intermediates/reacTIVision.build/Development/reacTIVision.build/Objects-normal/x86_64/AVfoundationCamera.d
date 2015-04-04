@@ -77,6 +77,9 @@ dependencies: \
   ../macosx/dc1394/capture.h ../macosx/dc1394/video.h \
   ../macosx/dc1394/conversions.h ../macosx/dc1394/format7.h \
   ../macosx/dc1394/iso.h ../macosx/dc1394/register.h \
-  ../macosx/dc1394/utils.h ../common/FileCamera.h \
-  ../common/FolderCamera.h ../common/RingBuffer.h \
+  ../macosx/dc1394/utils.h ../common/../macosx/USB3Camera.h \
+  /Library/Frameworks/m3api.framework/Headers/xiApi.h \
+  /Library/Frameworks/m3api.framework/Headers/wintypedefs.h \
+  /Library/Frameworks/m3api.framework/Headers/m3Identify.h \
+  ../common/FileCamera.h ../common/FolderCamera.h ../common/RingBuffer.h \
   ../common/FrameProcessor.h ../common/Main.h

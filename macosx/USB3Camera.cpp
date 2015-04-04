@@ -245,6 +245,7 @@ bool USB3Camera::findCamera() {
     DWORD nIndex = 0;
     HANDLE handle = INVALID_HANDLE_VALUE;//handle stays alive outside of this
     
+    
     xiGetNumberDevices(&tmp); //rescan available devices
     if (tmp == 0) {
         fprintf (stderr, "no USB3Camera cameras found\n");
@@ -457,15 +458,18 @@ bool USB3Camera::initCamera() {
      what might we want to do here?
      we need to figure out the width and height, in order to figure out the buffer size
      */
-    unsigned int w, h;
+    //unsigned int w, h;
     
     xiGetParamInt(handle, XI_PRM_WIDTH XI_PRM_INFO_MAX, &maxcx);
     xiGetParamInt(handle, XI_PRM_HEIGHT XI_PRM_INFO_MAX, &maxcy);
+    cam_width  = frame_width  = maxcx;
+    cam_height = frame_height = maxcy;
     
     //set default values
     
-    float fps=0;
-    xiGetParamFloat(handle, XI_PRM_FRAMERATE, &fps);
+    //float fps=0;
+    xiGetParamFloat(handle, XI_PRM_FRAMERATE, &fps);//use cameraEngine's fps instead of scoping it in here
+    
     
     float mingain, maxgain;
     xiGetParamFloat(handle, XI_PRM_GAIN XI_PRM_INFO_MIN, &mingain);
@@ -474,6 +478,8 @@ bool USB3Camera::initCamera() {
     //xiSetParamInt(handle, XI_PRM_AUTO_WB, 1);
     //xiSetParamInt(handle, XI_PRM_EXPOSURE, 10000);
     xiSetParamInt(handle, XI_PRM_IMAGE_DATA_FORMAT, XI_RAW8);
+    
+    
     
     applyCameraSettings();
     
@@ -487,6 +493,15 @@ unsigned char* USB3Camera::getFrame()
     
     if(xiGetImage(handle, 5000, &image) != XI_OK) {
         return NULL;
+    } else {
+        //
+        //memccpy(cam_buffer, <#const void *#>, <#int#>, <#size_t#>)
+        for(int i = 0; i < image.height; i++) {
+            memcpy(cam_buffer,
+                   (unsigned char*)image.bp+i*(image.width*(image.frm == XI_RAW8 ? 1 : 3)+image.padding_x),
+                   image.width*(image.frm == XI_RAW8 ? 1 : 3));
+        }
+        return cam_buffer;
     }
     /*
     dc1394video_frame_t *frame = NULL;
@@ -576,17 +591,17 @@ unsigned char* USB3Camera::getFrame()
     
 }
 
-//void* USB3Camera::videoDisplay(void*) {
-    /*
-     we probably don't need to call the video display .... that is a thread function that keeps going, it's the runner ... the thing that gets perpetually called
-     we don't need to do it, because there is another runner process already in motion - the reacTIVision tracker itself - we can put the important stuff in the getFrame method of this class
-     
-     */
-    //return NULL;
-//}
+
 
 bool USB3Camera::startCamera()
 {
+    if(xiStartAcquisition(handle) != XI_OK) {
+        fprintf(stderr,"camera doesn't seem to want to turn on\n");
+        return false;
+    } else {
+        return true;
+    
+    }
     /*
     if (dc1394_video_set_transmission(camera, DC1394_ON) !=DC1394_SUCCESS) {
         fprintf( stderr, "unable to start camera iso transmission\n");
@@ -609,9 +624,6 @@ bool USB3Camera::startCamera()
         return false;
     }
      */
-    //if(pthread_create(&videoThread, NULL, videoDisplay(), NULL))
-        //exit(1);
-    //pthread_create(&videoThread, NULL, USB3Camera::videoDisplay, NULL);
     
     
     running = true;
@@ -634,6 +646,8 @@ bool USB3Camera::stopCamera()
     }
     
     */
+    xiStopAcquisition(handle);
+    acquire = FALSE;
     running=false;
     return true;
 }
@@ -649,8 +663,10 @@ bool USB3Camera::resetCamera()
 
 bool USB3Camera::closeCamera()
 {
-    //if (camera!=NULL) dc1394_camera_free(camera);
-    //if (d!=NULL) dc1394_free(d);
+    xiCloseDevice(handle);
+    handle = INVALID_HANDLE_VALUE;
+    running=false;
+    
     return true;
 }
 
@@ -672,6 +688,21 @@ bool USB3Camera::setCameraSettingAuto(int mode, bool flag) {
     
     if ( dc1394_feature_set_mode(camera, feature, DC1394_FEATURE_MODE_AUTO) != DC1394_SUCCESS) return false;
     */
+    
+    //char * feature;
+    std::string feature = "";
+    //int feature;
+    //char[] feature;
+    switch (mode) {
+        //case BRIGHTNESS: feature = XI_PRM_EXPOSURE; break;
+        case GAIN: feature = XI_PRM_GAIN; break;
+        case SHUTTER: feature = XI_PRM_SHUTTER_TYPE; break;
+        case EXPOSURE: feature = XI_PRM_EXPOSURE; break;
+        case SHARPNESS: feature = XI_PRM_SHARPNESS; break;
+        //case FOCUS: feature = XI_PRM_EXPOSURE; break;
+        case GAMMA: feature = XI_PRM_GAMMAY; break;
+    } if (feature == "") return false;
+
     return true;
 }
 
@@ -780,8 +811,8 @@ int USB3Camera::getMinCameraSetting(int mode) {
     if (dc1394_feature_get_boundaries(camera, feature, &min, &max)!= DC1394_SUCCESS) return 0;
      */
     uint32_t min;
-    //
     uint32_t max;
+    
     return (int)min;
 }
 

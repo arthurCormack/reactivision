@@ -78,5 +78,9 @@ dependencies: \
   /Users/arthur/Code/reacTIVision-1.5-src/macosx/Frameworks/USBBusProber.framework/Headers/DecodeBOSDescriptor.h \
   /Users/arthur/Code/reacTIVision-1.5-src/macosx/Frameworks/VVUVCKit.framework/Headers/VVUVCKitStringAdditions.h \
   ../macosx/../common/SDLinterface.h ../common/RingBuffer.h \
-  ../common/FrameProcessor.h ../common/Main.h ../common/FileCamera.h \
-  ../common/FolderCamera.h
+  ../common/FrameProcessor.h ../common/Main.h \
+  ../common/../macosx/USB3Camera.h \
+  /Library/Frameworks/m3api.framework/Headers/xiApi.h \
+  /Library/Frameworks/m3api.framework/Headers/wintypedefs.h \
+  /Library/Frameworks/m3api.framework/Headers/m3Identify.h \
+  ../common/FileCamera.h ../common/FolderCamera.h
