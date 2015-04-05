@@ -162,12 +162,12 @@ void USB3Camera::listDevices() {
     */
     //it is quite possible that the sample code that was shipped with the XIMEA camera, is circa OSX10.7
     
-    if (tmp == 0) {
-        fprintf (stderr, "no DC1394 cameras found\n");
+    if (tmp == 0 || true) {
+        fprintf (stderr, "no USB3 cameras found\n");
         //
     } else {
         if(xiOpenDevice(nIndex, &handle) != XI_OK) {
-            printf("Couldn't setup camera!\n");
+            //printf("Couldn't setup camera!\n");
             //acquire = FALSE;
             //return TRUE;
         } else {
@@ -266,6 +266,18 @@ bool USB3Camera::findCamera() {
 bool USB3Camera::initCamera() {
     
     
+    DWORD tmp;
+    xiGetNumberDevices(&tmp);//rescan available devices. It is needed to be called before any other function of API is called by application.
+    DWORD nIndex = 0;
+    HANDLE handle = INVALID_HANDLE_VALUE;
+    
+    if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+        printf("Couldn't setup camera!\n");
+        //acquire = FALSE;
+        //return TRUE;
+    } else {
+        printf("InitCamera!\n");
+    }
     
     
     image.size = sizeof(XI_IMG);
@@ -460,8 +472,12 @@ bool USB3Camera::initCamera() {
      */
     //unsigned int w, h;
     
+    //could it be that the problem is that we simply don't have a camera handle yet?
     xiGetParamInt(handle, XI_PRM_WIDTH XI_PRM_INFO_MAX, &maxcx);
     xiGetParamInt(handle, XI_PRM_HEIGHT XI_PRM_INFO_MAX, &maxcy);
+    
+    
+    
     cam_width  = frame_width  = maxcx;
     cam_height = frame_height = maxcy;
     
@@ -490,18 +506,31 @@ bool USB3Camera::initCamera() {
 
 unsigned char* USB3Camera::getFrame()
 {
+    DWORD nIndex = 0;
+    
+    if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+        printf("Couldn't open camera!\n");
+        //acquire = FALSE;
+        //return TRUE;
+    } else {
+        printf("getFrame!\n");
+    }
     
     if(xiGetImage(handle, 5000, &image) != XI_OK) {
         return NULL;
     } else {
         //
-        //memccpy(cam_buffer, <#const void *#>, <#int#>, <#size_t#>)
+        //what does cam_buffer = ?
+        //printf("cam_buffer == " + cam_buffer);
+        //cam_buffer = NULL;
+        //let's try making a new buffer, for each frame here.
+        
         for(int i = 0; i < image.height; i++) {
             memcpy(cam_buffer,
                    (unsigned char*)image.bp+i*(image.width*(image.frm == XI_RAW8 ? 1 : 3)+image.padding_x),
                    image.width*(image.frm == XI_RAW8 ? 1 : 3));
         }
-        return cam_buffer;
+        
     }
     /*
     dc1394video_frame_t *frame = NULL;
@@ -595,6 +624,19 @@ unsigned char* USB3Camera::getFrame()
 
 bool USB3Camera::startCamera()
 {
+    DWORD tmp;
+    xiGetNumberDevices(&tmp);//rescan available devices. It is needed to be called before any other function of API is called by application.
+    DWORD nIndex = 0;
+    HANDLE handle = INVALID_HANDLE_VALUE;
+    
+    if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+        printf("Couldn't setup camera!\n");
+        //acquire = FALSE;
+        //return TRUE;
+    } else {
+        printf("startCamera!\n");
+    }
+    
     if(xiStartAcquisition(handle) != XI_OK) {
         fprintf(stderr,"camera doesn't seem to want to turn on\n");
         return false;

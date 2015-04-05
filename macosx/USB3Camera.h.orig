@@ -30,7 +30,7 @@
 
 //#import <AVFoundation/AVFoundation.h>
 #include <sys/time.h>
-//#include <pthread.h>
+#include <pthread.h>
 #include <string.h>
 
 #include <m3api/xiApi.h>
@@ -73,9 +73,6 @@ public:
     bool setDefaultCameraSetting(int mode);
     
     void* videoDisplay(void*);
-    HANDLE handle;//for some reason that i don't quite comprehend, the handle doesn't live on
-    
-    
     
 private:
     /*
@@ -86,18 +83,23 @@ private:
      */
     //usb3 specific stuff here
     
+<<<<<<< HEAD
+    //*camera;
+    
+    //HANDLE *camera;
+=======
+>>>>>>> 4af0a03d4139571c2e5d43996a82f5c8f2f7d2a6
     /* so with regards to the list
      ... we either have to find a congruent structure in xiAPI ... or ... we have to construct one ... make a struct that has the same required properties / members */
     
     
     unsigned long getcurus();
-    
+    HANDLE handle;
     XI_IMG_FORMAT prev_format = XI_RAW8;
     XI_IMG image;
     
     
     BOOLEAN acquire, quitting, render = TRUE;
-    
     
     int maxcx, maxcy, roix0, roiy0, roicx, roicy;
     
