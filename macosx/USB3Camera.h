@@ -30,7 +30,15 @@
 
 //#import <AVFoundation/AVFoundation.h>
 #include <sys/time.h>
-//#include <pthread.h>
+#include <pthread.h>
+//#include <gtk/gtk.h>
+//#include "/usr/local/Cellar/gtk+/2.24.25/include/gtk-2.0/gtk/gtk.h"
+/*
+ ok ... swo here is the crux ... we want to copu the frame into the cam_buffer ... but the data that the frame is in, doesn't want to be cast into char so easily. so what are our options, to recast it? well ... maybe make it a guint8, but maybe it is something a little different ... maybe it is the way that we are trying to cast it, not what we are trying to cast it inot that is the problem here
+ 
+ */
+
+
 #include <string.h>
 
 #include <m3api/xiApi.h>

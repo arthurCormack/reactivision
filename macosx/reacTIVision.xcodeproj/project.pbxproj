@@ -302,6 +302,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8E4F571F1AC66317009EF6B2 /* m3api.framework */,
 				B244E81519C6D4DC008ADD32 /* libusb.a */,
 				B2CA60030CD623FA00B46958 /* libdc1394.a */,
 				B2DEC9D819F65354006CAD09 /* SDL2.framework */,
@@ -330,7 +331,6 @@
 		29B97314FDCFA39411CA2CEA /* visionEngineNT */ = {
 			isa = PBXGroup;
 			children = (
-				8E4F571F1AC66317009EF6B2 /* m3api.framework */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -781,6 +781,7 @@
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
 			};
 			name = Development;
 		};
@@ -807,7 +808,7 @@
 				OTHER_LDFLAGS = "";
 				SDKROOT = macosx;
 				STRIP_STYLE = all;
-				USER_HEADER_SEARCH_PATHS = "";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
 			};
 			name = Deployment;
 		};
@@ -825,13 +826,14 @@
 				GCC_UNROLL_LOOPS = YES;
 				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = "./**";
-				"HEADER_SEARCH_PATHS[arch=*]" = ../.;
+				"HEADER_SEARCH_PATHS[arch=*]" = "/usr/local/Cellar/gtk+/2.24.25/include/gtk-2.0/**";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
-				LIBRARY_SEARCH_PATHS = "";
+				LIBRARY_SEARCH_PATHS = "/usr/local/Cellar/gtk+/2.24.25/include/gtk-2.0/**";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				STRIP_STYLE = debugging;
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
 			};
 			name = Default;
 		};

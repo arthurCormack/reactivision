@@ -480,7 +480,7 @@ bool USB3Camera::initCamera() {
     
     cam_width  = frame_width  = maxcx;
     cam_height = frame_height = maxcy;
-    
+    cam_buffer = new unsigned char[cam_width*cam_height*bytes];
     //set default values
     
     //float fps=0;
@@ -520,18 +520,31 @@ unsigned char* USB3Camera::getFrame()
         return NULL;
     } else {
         //
+        
+        XI_IMG src = image;
+        unsigned char *dest = cam_buffer;
+        
+        /*for (int i=0;i<image.height; i++) {
+            memcpy(cam_buffer, (image.bp+i*(image.width + image.padding_x)), image.width);
+            
+        }*/
+        
         //what does cam_buffer = ?
         //printf("cam_buffer == " + cam_buffer);
         //cam_buffer = NULL;
         //let's try making a new buffer, for each frame here.
         
         for(int i = 0; i < image.height; i++) {
-            memcpy(cam_buffer,
-                   (unsigned char*)image.bp+i*(image.width*(image.frm == XI_RAW8 ? 1 : 3)+image.padding_x),
+            //so ... this doesn't <not> work, but it doesn't really work either
+            //
+            memcpy(cam_buffer, (unsigned char*)image.bp+i*(image.width*(image.frm == XI_RAW8 ? 1 : 3)+image.padding_x),
                    image.width*(image.frm == XI_RAW8 ? 1 : 3));
         }
         
     }
+    
+    
+    
     /*
     dc1394video_frame_t *frame = NULL;
     dc1394_capture_dequeue(camera, DC1394_CAPTURE_POLICY_POLL, &frame);
