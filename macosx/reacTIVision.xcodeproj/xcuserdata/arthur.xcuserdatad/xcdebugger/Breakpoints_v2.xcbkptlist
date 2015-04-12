@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "USB3Camera.cpp"
-            timestampString = "450540059.447541"
+            timestampString = "450558045.327937"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "733"
-            endingLineNumber = "733"
+            startingLineNumber = "758"
+            endingLineNumber = "758"
             landmarkName = "USB3Camera::setCameraSettingAuto(int mode, bool flag)"
             landmarkType = "5">
          </BreakpointContent>

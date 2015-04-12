@@ -491,10 +491,11 @@ bool USB3Camera::initCamera() {
     xiGetParamFloat(handle, XI_PRM_GAIN XI_PRM_INFO_MIN, &mingain);
     xiGetParamFloat(handle, XI_PRM_GAIN XI_PRM_INFO_MAX, &maxgain);
     
-    //xiSetParamInt(handle, XI_PRM_AUTO_WB, 1);
-    //xiSetParamInt(handle, XI_PRM_EXPOSURE, 10000);
-    xiSetParamInt(handle, XI_PRM_IMAGE_DATA_FORMAT, XI_RAW8);
+    xiSetParamInt(handle, XI_PRM_AUTO_WB, 1);
+    xiSetParamInt(handle, XI_PRM_EXPOSURE, 10000);
     
+    xiSetParamInt(handle, XI_PRM_IMAGE_DATA_FORMAT, XI_RAW8);
+    xiSetParamInt(handle, XI_PRM_BUFFER_POLICY, XI_BP_SAFE);
     
     
     applyCameraSettings();
@@ -519,28 +520,40 @@ unsigned char* USB3Camera::getFrame()
     if(xiGetImage(handle, 5000, &image) != XI_OK) {
         return NULL;
     } else {
-        //
+        //we do have a handle
         
         XI_IMG src = image;
-        unsigned char *dest = cam_buffer;
+        //unsigned char *dest = cam_buffer;
+        
+        unsigned char *buffer = new unsigned char[cam_width*cam_height];
         
         /*for (int i=0;i<image.height; i++) {
             memcpy(cam_buffer, (image.bp+i*(image.width + image.padding_x)), image.width);
             
         }*/
         
+        //printf("bytes=\n" + itoa(bytes));
+
         //what does cam_buffer = ?
         //printf("cam_buffer == " + cam_buffer);
         //cam_buffer = NULL;
         //let's try making a new buffer, for each frame here.
-        
-        for(int i = 0; i < image.height; i++) {
+        if(!image.padding_x) {
+            //gst_buffer_set_data(buffer, (guint8*)image.bp, image.width*image.height*(image.frm == XI_RAW8 ? 1 : 3));
+            memcpy(buffer, (unsigned char*)image.bp, (image.width*(1)));
+            printf("no padding!\n");
+        } else {
+            printf("yes padding!\n");
+           for(int i = 0; i < image.height; i++) {
             //so ... this doesn't <not> work, but it doesn't really work either
             //
-            memcpy(cam_buffer, (unsigned char*)image.bp+i*(image.width*(image.frm == XI_RAW8 ? 1 : 3)+image.padding_x),
-                   image.width*(image.frm == XI_RAW8 ? 1 : 3));
+            memcpy(buffer, (unsigned char*)image.bp+i*(image.width*(1)+image.padding_x),
+                   image.width*(1));
+            
+           }
         }
-        
+       
+        return buffer;
     }
     
     
@@ -701,6 +714,17 @@ bool USB3Camera::stopCamera()
     }
     
     */
+    
+    DWORD nIndex = 0;
+    HANDLE handle = INVALID_HANDLE_VALUE;
+    if(xiOpenDevice(nIndex, &handle) != XI_OK) {
+        printf("Couldn't stopCamera camera!\n");
+        //acquire = FALSE;
+        //return TRUE;
+    } else {
+        printf("stopCamera!\n");
+    }
+    
     xiStopAcquisition(handle);
     acquire = FALSE;
     running=false;
@@ -718,6 +742,7 @@ bool USB3Camera::resetCamera()
 
 bool USB3Camera::closeCamera()
 {
+    //stopCamera();
     xiCloseDevice(handle);
     handle = INVALID_HANDLE_VALUE;
     running=false;
