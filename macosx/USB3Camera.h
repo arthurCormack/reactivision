@@ -22,7 +22,8 @@
 //
 //  Created by Arthur Cormack on 2015-03-18.
 //
-//
+//  possibly, a different approach has to be considered - a
+//  what about a thread that outputs to gstreamer ... and then the getFrame business is accomplished by getting it from GStreamer, in
 
 #ifndef reacTIVision_USB3Camera_h
 #define reacTIVision_USB3Camera_h
@@ -31,6 +32,8 @@
 //#import <AVFoundation/AVFoundation.h>
 #include <sys/time.h>
 #include <pthread.h>
+#include <gst/app/gstappsrc.h>
+#include <gst/interfaces/xoverlay.h>
 //#include <gtk/gtk.h>
 //#include "/usr/local/Cellar/gtk+/2.24.25/include/gtk-2.0/gtk/gtk.h"
 /*

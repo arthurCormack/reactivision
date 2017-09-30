@@ -781,7 +781,7 @@
 				SDKROOT = macosx;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_STYLE = "non-global";
-				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/** /opt/local/include/gstreamer-0.10/** /usr/local/Cellar/glib/2.44.1/** /opt/local/include/libxml2/**";
 			};
 			name = Development;
 		};
@@ -808,7 +808,7 @@
 				OTHER_LDFLAGS = "";
 				SDKROOT = macosx;
 				STRIP_STYLE = all;
-				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/** /opt/local/include/gstreamer-0.10/** /usr/local/Cellar/glib/2.44.1/** /usr/local/Cellar/libxml2/2.9.2/include/libxml2/libxml/**";
 			};
 			name = Deployment;
 		};
@@ -833,7 +833,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = macosx;
 				STRIP_STYLE = debugging;
-				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/**";
+				USER_HEADER_SEARCH_PATHS = "/usr/local/Cellar/gtk/** /opt/local/include/gstreamer-0.10/** /usr/local/Cellar/glib/2.44.1/** /usr/local/Cellar/libxml2/2.9.2/include/libxml2/libxml/**";
 			};
 			name = Default;
 		};

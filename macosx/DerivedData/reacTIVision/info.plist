@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LastAccessedDate</key>
+	<date>2017-09-30T03:41:33Z</date>
 	<key>WorkspacePath</key>
 	<string>/Users/arthur/Code/reacTIVision-1.5-src/macosx/reacTIVision.xcodeproj</string>
 </dict>

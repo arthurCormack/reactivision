@@ -507,6 +507,7 @@ bool USB3Camera::initCamera() {
 
 unsigned char* USB3Camera::getFrame()
 {
+    //consider sing a pthread to do this ... so that we can easily dispose of the memory that is used by it 
     DWORD nIndex = 0;
     
     if(xiOpenDevice(nIndex, &handle) != XI_OK) {

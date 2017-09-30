@@ -433,7 +433,7 @@ int main(int argc, char* argv[]) {
 	calibrator = new CalibrationEngine(config.grid_config);
 	engine->addFrameProcessor(calibrator);
 
-	engine->run();
+	engine->run();//I think that this runs ... and keeps running, and prevents execution of the stuff that comes afterwards, which appears to kill everything that was in memory
 	teardownCamera(camera);
 
 	config.display_mode = engine->getDisplayMode();
